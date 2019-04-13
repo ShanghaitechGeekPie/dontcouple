@@ -14,6 +14,7 @@ A group of function-based and/or callback-styled abstraction for Chisel3.
 
 - Bad names for the testbench files.
 - Limited functions for the present.
+- Increase output file size.
 
 ## Advantages?
 

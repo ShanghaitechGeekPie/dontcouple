@@ -6,11 +6,6 @@ import chisel3.util._
 
 import dontcouple.ops._
 
-case class FilterFunction[SRC_T <: Data, DST_T <: Data] (src: SRC_T, dst: DST_T, f: SRC_T => DST_T) {
-  def get_src = src.cloneType
-  def get_dst = dst.cloneType
-}
-
 abstract class TDecoupledFilter[SRC_T <: Data, DST_T <: Data] extends Module{
   this: Module =>
   def src: () => SRC_T
@@ -24,7 +19,7 @@ class DecoupledFilterBrick[SRC_T <: Data, DST_T <: Data](
 ) extends TDecoupledFilter[SRC_T, DST_T] {
   val io = IO(new Bundle {
     val i = Flipped(Decoupled(f.src))
-    val o = DecoupledIO(f.dst)
+    val o = Decoupled(f.dst)
   })
   def src = () => f.get_src
   def dst = () => f.get_dst
