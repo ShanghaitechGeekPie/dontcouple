@@ -28,7 +28,7 @@ class DecoupledTX[T <: Data](
   }
   def spin_till_done() = {
     when(state === sBusy) {
-      when(m_valid) {
+      when(s.ready) {
         done()
       }
     }
