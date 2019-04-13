@@ -19,7 +19,7 @@ class mUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPokeTester(m) {
 
   val queue_i = Queue[Int]()
   val queue_o = Queue[Int]()
-  for(i <- 0 to 10000) {
+  for(i <- 0 to 1000) {
     val x = rnd.nextInt(100000) - (100000 / 2)
     queue_i += x
     queue_o += fm(x)
@@ -68,14 +68,14 @@ class mUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPokeTester(m) {
   * sbt 'testOnly gcd.GCDTester'
   * }}}
   */
-class mTester extends ChiselFlatSpec with Dontcouple_DecoupledContext {
+class mTester extends ChiselFlatSpec with Dontcouple_Context with Dontcouple_DecoupledFilter_Context {
   val f1 = (SInt(32.W), SInt(32.W),
     (x: SInt) => {x * x - 35.S}
   )
   val f2 = (SInt(32.W), SInt(32.W),
     (x: SInt) => {x + 1.S}
   )
-  val mgen = f1 <> f2 <> f1
+  val mgen = (f1 <> f2 <> f1)(GEN_DECOUPLED_FILTER)
   // Disable this until we fix isCommandAvailable to swallow stderr along with stdout
   private val backendNames = if(false && firrtl.FileUtils.isCommandAvailable(Seq("verilator", "--version"))) {
     Array("firrtl", "verilator")

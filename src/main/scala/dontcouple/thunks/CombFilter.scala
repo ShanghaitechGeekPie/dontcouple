@@ -28,26 +28,9 @@ class CombFilterBrick[SRC_T <: Data, DST_T <: Data](
   io.o := f.f(io.i)
 }
 
-case class CombFilterGen[SRC_T <: Data, DST_T <: Data](gen: () => TCombFilter[SRC_T, DST_T]) {
-  def apply() = {
-    gen()
-  }
-  def <>[NXT_T <: Data](
-    gen_r: CombFilterGen[DST_T, NXT_T]
-  ): CombFilterGen[SRC_T, NXT_T] = {
-    val gen_l = this
-    new CombFilterGen(() => {new CombFilterCons(gen_l, gen_r)})
-  }
-}
-object CombFilterGen {
-  implicit def lift[SRC_T <: Data, DST_T <: Data](tup: (SRC_T, DST_T, SRC_T => DST_T)): CombFilterGen[SRC_T, DST_T] = {
-    new CombFilterGen(() => {new CombFilterBrick(new FilterFunction(tup._1, tup._2, tup._3))})
-  }
-}
-
 class CombFilterCons[SRC_T <: Data, MID_T <: Data, DST_T <: Data](
-  gen_l: CombFilterGen[SRC_T, MID_T],
-  gen_r: CombFilterGen[MID_T, DST_T]
+  gen_l: () => TCombFilter[SRC_T, MID_T],
+  gen_r: () => TCombFilter[MID_T, DST_T]
 ) extends TCombFilter[SRC_T, DST_T] {
   val blk_l = Module(gen_l())
   val blk_r = Module(gen_r())
@@ -66,9 +49,33 @@ class CombFilterCons[SRC_T <: Data, MID_T <: Data, DST_T <: Data](
   blk_r.oport() <> io.o
 }
 
-trait Dontcouple_CombContext {
-  implicit def lift[SRC_T <: Data, DST_T <: Data](tup: (SRC_T, DST_T, SRC_T => DST_T)): CombFilterGen[SRC_T, DST_T] = {
-    new CombFilterGen(() => {new CombFilterBrick(new FilterFunction(tup._1, tup._2, tup._3))})
+object GEN_COMB_FILTER
+
+class CombFilterGen[SRC_T <: Data, DST_T <: Data](
+  fil: TFilter[SRC_T, DST_T]
+) {
+  def apply(gen_sel: GEN_COMB_FILTER.type): () => TCombFilter[SRC_T, DST_T] = {
+    fil match {
+      case brick: FilterBrick[SRC_T, DST_T] => {
+        () => {new CombFilterBrick[SRC_T, DST_T](brick.f)}
+      }
+      case cons: FilterCons[SRC_T, _, DST_T] => {
+        cons match {
+  	    case FilterCons(l: TFilter[SRC_T, cons.MID_T_], r: TFilter[cons.MID_T_, DST_T]) => 
+  	      () => {
+  	        new CombFilterCons[SRC_T, cons.MID_T_, DST_T](
+  	          () => {new CombFilterGen(l)(gen_sel)()},
+  	          () => {new CombFilterGen(r)(gen_sel)()}
+  	        )
+  	      }
+  	    }
+      }
+    }
   }
 }
 
+trait Dontcouple_CombFilter_Context {
+  implicit def lift[SRC_T <: Data, DST_T <: Data](fil: TFilter[SRC_T, DST_T]) = {
+    new CombFilterGen(fil)
+  }
+}
