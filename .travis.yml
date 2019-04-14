@@ -19,7 +19,7 @@ install:
 
 cache:
   directories:
-  - /verilator
+  - ./verilator
    
 script:
   - sbt 'testOnly dontcouple.mTester'
