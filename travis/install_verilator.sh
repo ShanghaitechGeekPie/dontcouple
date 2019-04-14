@@ -35,7 +35,7 @@ then
 	mkdir -p ../verilator/verilator/
 	mv bin ../verilator/bin
 	cp /usr/local/share/pkgconfig/* ../verilator/pkgconfig/
-	cp /usr/local/share/verilator/* ../verilator/verilator/*
+	cp -r /usr/local/share/verilator/* ../verilator/verilator/
 	echo VERILATOR_VERSION > ../verilator/version
 	exit 0
 else
