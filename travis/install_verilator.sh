@@ -5,9 +5,9 @@
 if [ -z "$1" ]
 then
 	# As suggested by chisel3, we use 4.006 here
-	export VERILATOR_VERSION=4.006
+	VERILATOR_VERSION=4.006
 else
-	export VERILATOR_VERSION=$1
+	VERILATOR_VERSION=$1
 fi
 
 if [ -d "./verilator/bin" ] && [ "VERILATOR_VERSION" == "$(cat ./verilator/version)" ]
@@ -23,7 +23,7 @@ fi
 rm verilator -rf
 
 # Fetch
-wget "https://www.veripool.org/ftp/verilator-$(VERILATOR_VERSION).tgz"
+wget "https://www.veripool.org/ftp/verilator-$VERILATOR_VERSION.tgz"
 tar -zxvf verilator-*.tgz
 cd verilator-*
 
