@@ -11,8 +11,8 @@ import chisel3.iotesters.{ChiselFlatSpec, Driver, PeekPokeTester}
 
 import dontcouple.thunks._
 
-class mUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPokeTester(m) {
-  println("Start test.")
+class DecoupledFilterUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPokeTester(m) {
+
   def fm(x: Int): Int = {
     (x * x - 35 + 1) * (x * x - 35 + 1) - 35
   }
@@ -57,18 +57,7 @@ class mUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPokeTester(m) {
 
 }
 
-/**
-  * This is a trivial example of how to run this Specification
-  * From within sbt use:
-  * {{{
-  * testOnly gcd.GCDTester
-  * }}}
-  * From a terminal shell use:
-  * {{{
-  * sbt 'testOnly gcd.GCDTester'
-  * }}}
-  */
-class mTester extends ChiselFlatSpec with Dontcouple_Context with Dontcouple_DecoupledFilter_Context {
+class DecoupledFilterTester extends ChiselFlatSpec with Dontcouple_Context with Dontcouple_DecoupledFilter_Context {
   val f1 = (SInt(32.W), SInt(32.W),
     (x: SInt) => {x * x - 35.S}
   )
@@ -86,7 +75,7 @@ class mTester extends ChiselFlatSpec with Dontcouple_Context with Dontcouple_Dec
   for ( backendName <- backendNames ) {
     "DecoupledFilter" should s"1) finish in finite time with finite inputs 2) on average 2 cycle per input 3) output correctly (with $backendName)" in {
       Driver(() => mgen(), backendName) {
-        m => new mUnitTester(m)
+        m => new DecoupledFilterUnitTester(m)
       } should be (true)
     }
   }
@@ -94,14 +83,14 @@ class mTester extends ChiselFlatSpec with Dontcouple_Context with Dontcouple_Dec
   "using --backend-name verilator" should "be an alternative way to run using verilator" in {
     if(backendNames.contains("verilator")) {
       iotesters.Driver.execute(Array("--backend-name", "verilator"), () => mgen()) {
-        m => new mUnitTester(m)
+        m => new DecoupledFilterUnitTester(m)
       } should be(true)
     }
   }
 
   "running with --is-verbose" should "show more about what's going on in your tester" in {
     iotesters.Driver.execute(Array("--is-verbose"), () => mgen()) {
-      m => new mUnitTester(m)
+      m => new DecoupledFilterUnitTester(m)
     } should be(true)
   }
 
@@ -117,7 +106,7 @@ class mTester extends ChiselFlatSpec with Dontcouple_Context with Dontcouple_Dec
       () => mgen()
     ) {
 
-      m => new mUnitTester(m)
+      m => new DecoupledFilterUnitTester(m)
     } should be(true)
 
     new File("test_run_dir/make_no_vcd/make_a_vcd.vcd").exists should be (false)

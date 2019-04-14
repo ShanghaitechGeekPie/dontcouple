@@ -7,7 +7,7 @@ import chisel3.util._
 import dontcouple.ops._
 
 abstract class TCombFilter[SRC_T <: Data, DST_T <: Data] extends Module{
-  this: Module =>
+
   def src: () => SRC_T
   def dst: () => DST_T
   def iport: () => SRC_T

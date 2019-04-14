@@ -9,6 +9,7 @@ A group of function-based and/or callback-styled abstraction for Chisel3.
 
 - Callback-styled decoupled read/write operations.
 - Map one composition of one-input-one-output functions to one decoupled pipeline.
+- Map one composition of one-input-one-output functions to one combinational block.
 
 ## Disadvantages?
 
@@ -23,7 +24,6 @@ A group of function-based and/or callback-styled abstraction for Chisel3.
 
 ## TODO
 
-- Add more backends other than DecoupledIO-based pipelines, e.g. ValidIO-based pipelines...
 - Add support for AXI4 interface family.
 - Add fold operation for stream-style input.
 - Testbenches

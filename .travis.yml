@@ -30,7 +30,8 @@ before_cache:
   - find $HOME/.sbt        -name "*.lock"               -print -delete
 
 script:
-  - sbt 'testOnly dontcouple.mTester'
+  - sbt 'testOnly dontcouple.DecoupledFilterTester'
+  - sbt 'testOnly dontcouple.CombinationalFilterTester'
 
 scala:
   - 2.11.12

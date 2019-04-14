@@ -7,7 +7,7 @@ import chisel3.util._
 import dontcouple.ops._
 
 abstract class TDecoupledFilter[SRC_T <: Data, DST_T <: Data] extends Module{
-  this: Module =>
+
   def src: () => SRC_T
   def dst: () => DST_T
   def iport: () => DecoupledIO[SRC_T]
