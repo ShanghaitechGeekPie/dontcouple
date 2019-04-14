@@ -5,9 +5,9 @@
 if [ -z "$1" ]
 then
 	# As suggested by chisel3, we use 4.006 here
-	VERILATOR_VERSION=4.006
+	export VERILATOR_VERSION=4.006
 else
-	VERILATOR_VERSION=$1
+	export VERILATOR_VERSION=$1
 fi
 
 if [ -d "./verilator/bin" ] && [ "VERILATOR_VERSION" == "$(cat ./verilator/version)" ]
