@@ -24,7 +24,7 @@ rm verilator -rf
 
 # Fetch
 wget "https://www.veripool.org/ftp/verilator-$VERILATOR_VERSION.tgz"
-tar -zxvf verilator-*.tgz
+tar -zxf verilator-*.tgz
 cd verilator-*
 
 # Install
