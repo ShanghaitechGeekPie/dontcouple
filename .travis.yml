@@ -25,10 +25,6 @@ cache:
 script:
   - sbt 'testOnly dontcouple.mTester'
 
-jdk:
-  - oraclejdk8
-  - openjdk8
-  
 scala:
   - 2.11.12
   - 2.12.4
