@@ -19,7 +19,6 @@ install:
 
 cache:
   directories:
-  - /usr/local/share/verilator
   - /verilator
    
 script:
