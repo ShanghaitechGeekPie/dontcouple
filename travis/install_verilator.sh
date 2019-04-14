@@ -4,7 +4,7 @@
 if [ -d "./verilator/bin" ]
 then
 	# has cache, move stuff to where it belongs
-	sudo mv ./verilator/bin/* /usr/lib/bin && sudo mv ./verilator/pkgconfig/* /usr/local/share/pkgconfig/ && sudo mv ./verilator/verilator /usr/local/share/verilator
+	sudo mv ./verilator/bin/* /usr/local/bin/ && sudo mv ./verilator/pkgconfig/* /usr/local/share/pkgconfig/ && sudo mv ./verilator/verilator /usr/local/share/verilator
 	exit $?
 fi
 
