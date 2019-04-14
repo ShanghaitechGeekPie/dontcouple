@@ -1,4 +1,4 @@
-dontcouple
+dontcouple [![Build Status](https://travis-ci.org/ShanghaitechGeekPie/dontcouple.svg?branch=master)](https://travis-ci.org/ShanghaitechGeekPie/dontcouple)
 =======================
 
 ## What it is?
