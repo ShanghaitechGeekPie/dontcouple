@@ -13,7 +13,7 @@ fi
 if [ -d "./verilator/bin" ] && [ "VERILATOR_VERSION" == "$(cat ./verilator/version)" ]
 then
 	# Valid cache, move stuff to where it belongs
-	sudo mv ./verilator/bin/* /usr/local/bin/ && && sudo mkdir -p /usr/local/share/pkgconfig/ && sudo mv ./verilator/pkgconfig/* /usr/local/share/pkgconfig/ && sudo mv ./verilator/verilator /usr/local/share/verilator
+	sudo mv ./verilator/bin/* /usr/local/bin/ && sudo mkdir -p /usr/local/share/pkgconfig/ && sudo mv ./verilator/pkgconfig/* /usr/local/share/pkgconfig/ && sudo mv ./verilator/verilator /usr/local/share/verilator
 	exit $?
 fi
 
