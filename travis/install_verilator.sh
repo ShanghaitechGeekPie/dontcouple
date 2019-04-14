@@ -33,7 +33,7 @@ then
 	# Prepare the cache for save
 	mkdir -p ../verilator/pkgconfig/
 	mkdir -p ../verilator/verilator/
-	mv bin ../verilator
+	mv bin ../verilator/bin
 	cp /usr/local/share/pkgconfig/* ../verilator/pkgconfig/
 	cp /usr/local/share/verilator/* ../verilator/verilator/*
 	echo VERILATOR_VERSION > ../verilator/version
