@@ -1,0 +1,37 @@
+language: scala
+
+dist: xenial
+
+addons:
+  apt:
+    packages:
+    - wget 
+    - make 
+    - autoconf 
+    - g++ 
+    - flex 
+    - bison
+
+install:
+  - ./travis/install_verilator.sh
+  # next line check for verilator is actually installed and available
+  - verilator -V 
+
+cache:
+  directories:
+  - ./verilator
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt
+
+before_cache:
+  # Cleanup the cached directories to avoid unnecessary cache updates
+  - rm -fv $HOME/.ivy2/.sbt.ivy.lock
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
+
+script:
+  - sbt 'testOnly dontcouple.mTester'
+
+scala:
+  - 2.11.12
+  - 2.12.4
