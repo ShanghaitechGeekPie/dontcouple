@@ -41,6 +41,9 @@ class MultiOp(
   }
   def spin_till_done() = {
     when(state === sBusy) {
+      for(ele <- eles) {
+        ele()
+      }
       val is_all_done = eles_done.foldLeft(true.B)((z: Bool, x: Bool) => {z && x})
       when(is_all_done) {
         done()
