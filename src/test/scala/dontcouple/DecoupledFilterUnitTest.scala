@@ -1,4 +1,3 @@
-// See README.md for license details.
 
 package dontcouple
 
@@ -48,9 +47,6 @@ class DecoupledFilterUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPok
   for(i <- 0 to 20) {
     step(1)
     val is_t_valid = peek(m.oport().valid)
-    if(is_t_valid == 1) {
-      println(peek(m.oport().bits).toString())
-    }
     expect(m.oport().valid, 0)
   }
   println("intended extra cycle: 20")
