@@ -46,7 +46,7 @@ class CombinationalFilterTester extends ChiselFlatSpec with Dontcouple_Context w
     Array("firrtl")
   }
   for ( backendName <- backendNames ) {
-    "DecoupledFilter" should s"1) finish in finite time with finite inputs 2) on average 2 cycle per input 3) output correctly (with $backendName)" in {
+    "CombFilter" should s"1) 0 cycle per input 2) output correctly (with $backendName)" in {
       Driver(() => mgen(), backendName) {
         m => new CombinationalFilterUnitTester(m)
       } should be (true)
