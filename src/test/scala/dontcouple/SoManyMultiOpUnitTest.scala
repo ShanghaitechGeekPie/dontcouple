@@ -77,7 +77,7 @@ class SoManyMultiOpUnitTester(m: SoManyMultiOpM) extends PeekPokeTester(m) {
   val queue_i2 = Queue[Int]()
   val queue_i3 = Queue[Int]()
   val queue_o = Queue[Int]()
-  for(i <- 0 to 10000) {
+  for(i <- 0 to 1000) {
     val x = rnd.nextInt(10000)
     val y = rnd.nextInt(10000)
     val z = rnd.nextInt(10000)
