@@ -13,6 +13,7 @@ class MultiOp(
   val sIdle :: sBusy :: Nil = Enum(2)
   val state = RegInit(sIdle)
   val eles_done = RegInit(VecInit(Seq.fill(eles_in.length){false.B}))
+  val all_eles_done = RegInit(false.B)
   val eles: List[SimpleOp] = eles_in.zipWithIndex.map(
     (ele_with_ind: (SimpleOp, Int)) => {
       val (ele, ind) = ele_with_ind
@@ -27,10 +28,15 @@ class MultiOp(
     for(ele_done <- eles_done) {
       ele_done := false.B
     }
+    all_eles_done := false.B
   }
   def kick() = {
     on_kick()
     state := sBusy
+    for(ele_done <- eles_done) {
+      ele_done := false.B
+    }
+    all_eles_done := false.B
     for(ele <- eles) {
       ele.kick()
     }
@@ -42,12 +48,12 @@ class MultiOp(
   def spin_till_done() = {
     when(state === sBusy) {
       for((ele, ind) <- eles.zipWithIndex) {
-        when(!eles_done(ind)) {
+        unless(eles_done(ind)) {
           ele()
         }
       }
-      val is_all_done = eles_done.foldLeft(true.B)((z: Bool, x: Bool) => {z && x})
-      when(is_all_done) {
+      all_eles_done := eles_done.foldLeft(true.B)((z: Bool, x: Bool) => {z && x})
+      when(all_eles_done) {
         done()
       }
     }

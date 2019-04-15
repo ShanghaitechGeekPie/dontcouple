@@ -32,6 +32,7 @@ before_cache:
 script:
   - sbt 'testOnly dontcouple.DecoupledFilterTester'
   - sbt 'testOnly dontcouple.CombinationalFilterTester'
+  - sbt 'testOnly dontcouple.MultiOpTester'
 
 scala:
   - 2.11.12

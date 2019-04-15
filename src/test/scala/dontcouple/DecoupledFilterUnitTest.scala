@@ -44,6 +44,8 @@ class DecoupledFilterUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPok
     }
   }
   
+  poke(m.iport().valid, 0)
+  
   for(i <- 0 to 20) {
     step(1)
     val is_t_valid = peek(m.oport().valid)
