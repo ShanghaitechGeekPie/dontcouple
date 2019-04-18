@@ -13,8 +13,17 @@ trait Dontcouple_Context {
 case class FilterFunction[SRC_T <: Data, DST_T <: Data] (src: SRC_T, dst: DST_T, f: SRC_T => DST_T) {
   def get_src = src.cloneType
   def get_dst = dst.cloneType
-  def <>[NXT_T <: Data](g: FilterFunction[DST_T, NXT_T]) = {
+  def compose[PRV_T <: Data](g: FilterFunction[PRV_T, SRC_T]) = {
+    val _f = this.f
+    val _g = g.f
+    val composed_f: PRV_T => DST_T = (t: PRV_T) => (_f(_g(t)))
+    new FilterFunction(g.get_src, get_dst, composed_f)
+  }
+  def concat[NXT_T <: Data](g: FilterFunction[DST_T, NXT_T]) = {
     new FilterCons(new FilterBrick(this), new FilterBrick(g))
+  }
+  def <>[NXT_T <: Data](g: FilterFunction[DST_T, NXT_T]) = {
+    this concat g
   }
 }
 
