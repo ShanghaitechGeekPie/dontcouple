@@ -10,6 +10,7 @@ A group of function-based and/or callback-styled abstraction for Chisel3.
 - Callback-styled decoupled read/write operations.
 - Map one composition of one-input-one-output functions to one decoupled pipeline.
 - Map one composition of one-input-one-output functions to one combinational block.
+- Manage multiple operations-all-to-be-done together as one operation.
 
 ## Disadvantages?
 
