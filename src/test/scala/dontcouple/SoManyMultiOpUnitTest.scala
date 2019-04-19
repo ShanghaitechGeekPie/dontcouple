@@ -173,12 +173,6 @@ class SoManyMultiOpTester extends ChiselFlatSpec with Dontcouple_Context with Do
     }
   }
 
-  "running with --is-verbose" should "show more about what's going on in your tester" in {
-    iotesters.Driver.execute(Array("--is-verbose"), () => mgen()) {
-      m => new SoManyMultiOpUnitTester(m)
-    } should be(true)
-  }
-
   /**
     * By default verilator backend produces vcd file, and firrtl and treadle backends do not.
     * Following examples show you how to turn on vcd for firrtl and treadle and how to turn it off for verilator

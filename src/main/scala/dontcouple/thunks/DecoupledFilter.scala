@@ -25,8 +25,7 @@ class DecoupledFilterBrick[SRC_T <: Data, DST_T <: Data](
   def dst = () => f.get_dst
   def iport = () => io.i
   def oport = () => io.o
-  val sRecv :: sSend :: Nil = Enum(2)
-  val state = RegInit(sRecv)
+
   val o_reg = RegInit(0.U.asTypeOf(f.dst))
   io.o.bits := o_reg
 
@@ -47,11 +46,8 @@ class DecoupledFilterBrick[SRC_T <: Data, DST_T <: Data](
     }
   )
   
-  when (state === sRecv) {
-    recv_i()
-  }.elsewhen(state === sSend) {
-    send_o()
-  }
+  val main_loop = new SerialOp(recv_i :: send_o :: Nil, rewind = true)
+  main_loop()
 }
 
 class DecoupledFilterCons[SRC_T <: Data, MID_T <: Data, DST_T <: Data](
