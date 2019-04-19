@@ -61,11 +61,6 @@ class CombinationalFilterTester extends ChiselFlatSpec with Dontcouple_Context w
     }
   }
 
-  "running with --is-verbose" should "show more about what's going on in your tester" in {
-    iotesters.Driver.execute(Array("--is-verbose"), () => mgen()) {
-      m => new CombinationalFilterUnitTester(m)
-    } should be(true)
-  }
 
   /**
     * By default verilator backend produces vcd file, and firrtl and treadle backends do not.
