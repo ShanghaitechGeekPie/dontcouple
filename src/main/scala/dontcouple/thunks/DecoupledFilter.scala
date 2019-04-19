@@ -29,18 +29,11 @@ class DecoupledFilterBrick[SRC_T <: Data, DST_T <: Data](
   val o_reg = RegInit(0.U.asTypeOf(f.dst))
   io.o.bits := o_reg
 
-  val send_o: DecoupledTX[DST_T] = new DecoupledTX(io.o,
-    on_done = () => {
-      recv_i.kick()
-    }
-  )
+  val send_o: DecoupledTX[DST_T] = new DecoupledTX(io.o)
 
   val recv_i: DecoupledRX[SRC_T] = new DecoupledRX(io.i,
     on_recv = (x: SRC_T) => {
       o_reg := f.f(x)
-    },
-    on_done = () => {
-      send_o.kick()
     }
   )
   
