@@ -31,7 +31,6 @@ class DecoupledFilterBrick[SRC_T <: Data, DST_T <: Data](
 
   val send_o: DecoupledTX[DST_T] = new DecoupledTX(io.o,
     on_done = () => {
-      state := sRecv
       recv_i.kick()
     }
   )
@@ -41,7 +40,6 @@ class DecoupledFilterBrick[SRC_T <: Data, DST_T <: Data](
       o_reg := f.f(x)
     },
     on_done = () => {
-      state := sSend
       send_o.kick()
     }
   )

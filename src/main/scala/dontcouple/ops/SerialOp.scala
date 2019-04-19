@@ -7,6 +7,7 @@ import chisel3.util._
 class SerialOp(
   eles_in: List[SimpleOp],
   rewind: Boolean = false,
+  is_compact: Boolean = true,
   val on_kick: () => Unit = () => (),
   val on_done: () => Unit = () => ()
 ) extends SimpleOp {
@@ -25,7 +26,9 @@ class SerialOp(
           }
         } else {
           state := (ind + 2).U
-          eles(ind + 1).kick()
+          if(is_compact) {
+            eles(ind + 1).kick()
+          }
         }
       })
     }
@@ -35,7 +38,9 @@ class SerialOp(
   }
   def kick() = {
     state := 1.U
-    eles(0).kick()
+    if(is_compact) {
+      eles(0).kick()
+    }
   }
   def done() = {
     on_done()
@@ -58,9 +63,9 @@ class SerialOp(
     }
   }
   def copy_but_on_kick(new_on_kick: () => Unit) = {
-    new SerialOp(eles_in, rewind, new_on_kick, on_done)
+    new SerialOp(eles_in, rewind, is_compact, new_on_kick, on_done)
   } 
   def copy_but_on_done(new_on_done: () => Unit) = {
-    new SerialOp(eles_in, rewind, on_kick, new_on_done)
+    new SerialOp(eles_in, rewind, is_compact, on_kick, new_on_done)
   }
 }
