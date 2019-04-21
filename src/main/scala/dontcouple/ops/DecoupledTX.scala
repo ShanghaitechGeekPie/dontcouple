@@ -23,8 +23,8 @@ class DecoupledTX[T <: Data](
     m_valid := true.B
   }
   def done() = {
-    on_done()
     reset()
+    on_done()
   }
   def spin_till_done() = {
     when(state === sBusy) {

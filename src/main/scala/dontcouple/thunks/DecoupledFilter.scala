@@ -37,7 +37,7 @@ class DecoupledFilterBrick[SRC_T <: Data, DST_T <: Data](
     }
   )
   
-  val main_loop = new SerialOp(recv_i :: send_o :: Nil, rewind = true)
+  val main_loop = new SerialOp(recv_i :: send_o :: Nil, rewind = true, is_compact = true)
   main_loop()
 }
 

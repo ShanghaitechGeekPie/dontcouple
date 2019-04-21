@@ -16,15 +16,16 @@ class DecoupledFilterUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPok
     (x * x - 35 + 1) * (x * x - 35 + 1) - 35
   }
 
-  val queue_i = Queue[Int]()
-  val queue_o = Queue[Int]()
+  var queue_i = Queue[Int]()
+  var queue_o = Queue[Int]()
   for(i <- 0 to 1000) {
     val x = rnd.nextInt(100000) - (100000 / 2)
     queue_i += x
     queue_o += fm(x)
   }
   
-  poke(m.iport().bits, queue_i(0))
+  poke(m.iport().bits, queue_i.dequeue)
+  step(1)
   poke(m.iport().valid, 1)
   poke(m.oport().ready, 1)
   
@@ -48,7 +49,43 @@ class DecoupledFilterUnitTester(m: TDecoupledFilter[SInt, SInt]) extends PeekPok
   
   for(i <- 0 to 20) {
     step(1)
+    expect(m.oport().valid, 0)
+  }
+  println("intended extra cycle: 20")
+  
+  queue_i = Queue[Int]()
+  queue_o = Queue[Int]()
+  for(i <- 0 to 1000) {
+    val x = rnd.nextInt(100000) - (100000 / 2)
+    queue_i += x
+    queue_o += fm(x)
+  }
+  
+  poke(m.iport().bits, queue_i.dequeue)
+  step(1)
+  poke(m.iport().valid, 1)
+  poke(m.oport().ready, 1)
+  
+  while(queue_o.size > 0) {
+    step(1)
+    val is_r_ready = peek(m.iport().ready)
+    if(is_r_ready == 1) {
+      if(queue_i.size == 0) {
+        poke(m.iport().valid, 0)
+      } else {
+        poke(m.iport().bits, queue_i.dequeue)
+      }
+    }
     val is_t_valid = peek(m.oport().valid)
+    if(is_t_valid == 1) {
+      expect(m.oport().bits, queue_o.dequeue)
+    }
+  }
+  
+  poke(m.iport().valid, 0)
+  
+  for(i <- 0 to 20) {
+    step(1)
     expect(m.oport().valid, 0)
   }
   println("intended extra cycle: 20")

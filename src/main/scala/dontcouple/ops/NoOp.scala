@@ -12,7 +12,7 @@ class NoOp(
     on_kick()
   }
   def done() = {
-    on_done
+    on_done()
   }
   def apply() = {
     kick()
