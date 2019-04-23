@@ -20,6 +20,7 @@ class DecoupledRX[T <: Data](
   }
   def kick() = {
     on_kick()
+    m.ready := s_ready
     state   := sBusy
     s_ready := true.B
   }

@@ -19,6 +19,7 @@ class DecoupledTX[T <: Data](
   }
   def kick() = {
     on_kick()
+    s.valid := m_valid
     state   := sBusy
     m_valid := true.B
   }
