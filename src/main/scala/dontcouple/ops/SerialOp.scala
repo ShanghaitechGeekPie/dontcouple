@@ -7,11 +7,11 @@ import chisel3.util._
 class SerialOp(
   eles_in: List[SimpleOp],
   rewind: Boolean = false,
-  is_compact: Boolean = true,
+  is_compact: Boolean = false,
   val on_kick: () => Unit = () => (),
   val on_done: () => Unit = () => ()
 ) extends SimpleOp {
-  assert(eles_in.length > 0)
+  require(eles_in.length > 0)
   val sIdle = 0.U
   val state = RegInit(0.U(log2Up(eles_in.length + 1).W))
   val eles: List[SimpleOp] = eles_in.zipWithIndex.map(
@@ -43,8 +43,8 @@ class SerialOp(
     }
   }
   def done() = {
-    on_done()
     reset()
+    on_done()
   }
   def spin_till_done() = {
     when(state =/= sIdle) {

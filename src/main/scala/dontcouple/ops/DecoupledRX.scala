@@ -20,12 +20,13 @@ class DecoupledRX[T <: Data](
   }
   def kick() = {
     on_kick()
+    m.ready := s_ready
     state   := sBusy
     s_ready := true.B
   }
   def done() = {
-    on_done()
     reset()
+    on_done()
   }
   def spin_till_done() = {
     when(state === sBusy) {
